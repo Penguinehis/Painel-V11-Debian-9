@@ -1,0 +1,60 @@
+Painel V11
+
+apt update && apt install apache2 mysql-server libssh2-1-dev php-ssh2 php libapache2-mod-php mcrypt php-curl curl unzip cron mcrypt phpmyadmin -y
+
+cd /var/www/html/
+
+wget http://sv.bigbolgames.com:8444/files/superuser/paineldb9/painelv11debian9penguin.zip && unzip painelv11debian9penguin.zip && rm -R index.html && rm -R painelv11debian9penguin.zip
+
+* * * * * root /usr/bin/php /var/www/html/pages/system/cron.php
+* * * * * root /usr/bin/php /var/www/html/pages/system/cron.ssh.php
+* * * * * root /usr/bin/php /var/www/html/pages/system/cron.sms.php
+* * * * * root /usr/bin/php /var/www/html/pages/system/cron.online.ssh.php
+10 * * * * root /usr/bin/php /var/www/html/pages/system/cron.servidor.php
+
+
+chmod 777 /var/www/html/admin/pages/servidor/ovpn
+chmod 777 /var/www/html/admin/pages/download
+chmod 777 /var/www/html/admin/pages/faturas/comprovantes
+
+nano /var/www/html/pages/system/pass.php
+
+Comandos MYSQL Start e stop
+
+/etc/init.d/mysql stop
+
+/etc/init.d/mysqld start
+
+mysqld_safe --skip-grant-tables &
+
+
+Comandos dentro do MYSQL 
+
+mysql -uroot
+
+use mysql;
+
+update user set authentication_string=PASSWORD("ponei") where User='root';
+
+flush privileges;
+
+quit
+
+
+Comando criar usuario MySQL
+
+
+mysql -u root -p
+
+GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '[ponei]' WITH GRANT OPTION; 
+
+CREATE USER 'painel'@'%' IDENTIFIED BY 'ponei';
+
+GRANT ALL PRIVILEGES ON *.* TO 'painel'@'%' WITH GRANT OPTION;
+
+
+Instalação Script cliente
+
+wget http://sv.bigbolgames.com:8444/files/superuser/paineldb9/scripts.zip && unzip scripts.zip && chmod 777 * && rm -R scripts.zip
+
+
